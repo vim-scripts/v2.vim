@@ -16,7 +16,7 @@ syn match v2CmdSysIO "[^F]OPEN\|AIO\.IN\|AIO\.INS\|AIO\.OUT\|ATTACH\|DETACH\|DEV
 syn match v2CmdLogicalOp "AND\|BAND\|BMASK\|BOR\|BXOR\|COM\|FALSE\|MOD\|NOT\|OFF\|ON\|TRUE\|XOR"
 syn match v2CmdMotion "ABOVE\|ACCEL\|ALIGN\|ALTER\|ALTOFF\|ALTON\|ALWAYS\|APPRO\|APPROS\|AUTO\.POWER\.OFF\|BASE\|BELOW\|BRAKE\|BREAK\|CALIBRATE\|CLOSE\|CLOSEI\|COARSE\|ALWAYS\|CONFIG\|CPOFF\|CPON\|DECOMPOSE\|DELAY\|DEPART\|DEPARTS\|DEST\|DISTANCE\|DRIVE\|DURATION\|DX\|DY\|DZ\|ESTOP\|FINE\|FLIP\|FRAME\|GAIN\.SET\|HAND\|HAND\.TIME\|HERE\|HOUR\.METER\|IDENTICAL\|INRANGE\|INVERSE\|JOG\|LATCH\|LATCHED\|LEFTY\|MOVE\|MOVES\|MOVEF\|MOVESF\|MOVET\|MOVEST\|MULTIPLE\|NOFLIP\|NUNULL\|NOOVERLAP\|NULL\|OPENI\|OVERLAP\|PAYLOAD\|REACTI\|READY\|RELAX\|RELAXI\|RIGHTY\|SELECT\|SET\|SHIFT\|SINGLE\|SOLVE\.ANGLES\|SOLVE\.TRANS\|SPEED\|SPIN\|STATE\|TOOL\|TRANS\|UNIDIRECT"
 syn match v2CmdNumOp "ABS\|ATAN2\|BCD\|COS\|DCB\|FRACT\|INT\|INTB\|MAX\|MIN\|OUTSIDE\|PI\|RANDOM\|SIGN\|SIN\|SQR\|SQRT\|VAL "
-syn match v2CmdProgCtrl "ABORT\|ANY\|SCALE\|CALL\|CALLP\|CALLS\|CASE.*OF\|CLEAR\.EVENT\|CYCLE\.END\|DISPLAY\.CAMERA\|DEFINED\|DISABLE\|DO\|DOS\|ELSE\|ENABLE\|END\|ERROR\|EXECUTE\|EXIT\|FOR\|TO[^O]\|STEP\|FREE\|GET\.EVENT\|GOTO\|HALT\|ID\|\$ID\|GOTO\|INSTALL\|INIT\.EVENT\|KILL\|LAST\|LOCK\|MC\|MCS\|NEXT\|PANIC\|PARAMETER\|PAUSE\|PRIORITY\|REACT\|REACTE\|RELEASE\|RETURN\|RETURNE\|RUNSIG\|SEE\|SELECT\|SET\.EVENT\|STATUS\|STOP\|SWITCH\|SYMBOL\.PTR\|TAS\|TASK\|TIME\|\$TIME\|TIMER\|TPS\|UNTIL\|WAIT\|WAIT\.EVENT\|WHILE\|DO"
+syn match v2CmdProgCtrl "ABORT\|ANY\|SCALE\|CALL\|CALLP\|CALLS\|CASE.*OF\|CLEAR\.EVENT\|CYCLE\.END\|DISPLAY\.CAMERA\|DEFINED\|DISABLE\|DOS\|DO\|ELSE\|ENABLE\|END\|ERROR\|EXECUTE\|EXIT\|FOR\|TO[^O]\|STEP\|FREE\|GET\.EVENT\|HALT\|ID\|\$ID\|GOTO\|INSTALL\|INIT\.EVENT\|KILL\|LAST\|LOCK\|MC\|MCS\|NEXT\|PANIC\|PARAMETER\|PAUSE\|PRIORITY\|REACT\|REACTE\|RELEASE\|RETURN\|RETURNE\|RUNSIG\|SEE\|SELECT\|SET\.EVENT\|STATUS\|STOP\|SWITCH\|SYMBOL\.PTR\|TAS\|TASK\|TIME\|\$TIME\|TIMER\|TPS\|UNTIL\|WAIT\|WAIT\.EVENT\|WHILE\|DO"
 syn match v2CmdStringOp "ASC\|\$CHR\|\$DBLB\|DBLB\|\$DECODE\|\$ENCODE\|\$ERROR\|\$FLTB\|FLTB\|\$INTB\|LEN\|\$LNGB\|LNGB\|\$MID\|PACK\|POS\|STRDIF\|\$SYMBOL\|\$TRANSB\|TRANSB\|\$TRUNCATE\|\$UNPACK"
 
 
@@ -27,11 +27,16 @@ syn match v2Conditional "IF\|THEN"
 
 syn match v2Parameters "\/[A-Za-z_]*" contained
 syn region v2String start="\"" end="\"" contains=v2Parameters oneline 
+syn match v2StringVar "\$[a-z][a-z\.]*"  
 
 syn match v2Program "^\.PROGRAM .*()$"
 syn match v2End "^\.END$"
 
 syn match v2Value "VALUE .*:"
+syn match v2Label "^[\t ]*[0-9]*\s" 
+syn match v2Goto "GOTO \d*"
+
+
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -45,10 +50,9 @@ if version >= 508 || !exists("did_conf_syntax_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
   
-  if !exists("v2_my_rendering")
-    hi def htmlUnderlined term=underline cterm=underline gui=underline
-  endif
+  hi  v2StringVar guifg=SeaGreen ctermfg=DarkGreen
 
+  HiLink v2StringVar Identifier
   HiLink v2Value Statement
   HiLink v2Comment Comment
   HiLink v2Type	Type
@@ -66,9 +70,12 @@ if version >= 508 || !exists("did_conf_syntax_inits")
   
   HiLink v2Program		PreProc
   HiLink v2End			PreProc
+
+  hi v2Label guifg=Gray ctermfg=Gray
+  hi v2Goto gui=underline guifg=Gray ctermfg=Gray
  
   
-  HiLink v2Value v2Underlined
+  hi v2Value gui=underline guifg=SeaGreen  
 endif
 
 let b:current_syntax = "v2" 
