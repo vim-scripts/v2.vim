@@ -30,9 +30,8 @@ syn region v2String start="\"" end="\"" contains=v2Parameters oneline
 syn match v2StringVar "\(\$[a-z][a-z\.]*\)\|\(\/N\|\/D\)"  
 syn match v2Var "[a-z][a-z0-9]*"  
 syn match v2Number "[0-9]\+"
-syn match v2Operator "(\|)\|\[\|\]"
+syn match v2Operator "(\|)\|\[\|\]\|,"
 
-syn match v2Program "^\.PROGRAM .*()$"
 syn match v2End "^\.END$"
 
 syn match v2Label "^[\t ]*[0-9]*\s" 
@@ -40,6 +39,7 @@ syn match v2Goto "GOTO \d*"
 
 syn region v2CaseOf start="CASE " end=" OF" contains=v2Var oneline 
 syn region v2Value start="VALUE " end=":" contains=v2Number oneline 
+syn region v2Program start="^\.PROGRAM [a-zA-Z\.]*(" end=")$" contains=v2StringVar,v2Var,v2Operator oneline 
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
